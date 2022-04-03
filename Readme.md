@@ -1,1 +1,1 @@
-# Todo app with Reactjs and Nodejs
+# Blog app with Reactjs and Nodejs

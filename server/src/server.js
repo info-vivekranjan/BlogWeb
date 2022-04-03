@@ -9,7 +9,7 @@ app.use(cors());
 
 const PORT = 8000;
 
-app.use('/todos', routes);
+app.use('/blogs', routes);
 
 app.listen(PORT, async () => {
   await connect();

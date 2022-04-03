@@ -1,19 +1,20 @@
 const express = require("express");
-const todos = require("../model/todoModel");
-const User = require("../model/todoUsersModel");
+const blogs = require("../model/blogModel");
+const User = require("../model/blogUsersModel");
 const CONSTANTS = require("../constants/constant");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { roles } = require("../grantObject");
 
-exports.postTodos = async (req, res) => {
-  const { title, status } = req.body;
-  const todo = {
+exports.postBlogs = async (req, res) => {
+  const { title, body, conclusion } = req.body;
+  const blog = {
     title,
-    status,
+    body,
+    conclusion
   };
 
-  await todos.create(todo, (error, addedTodos) => {
+  await blogs.create(blog, (error, addedBlogs) => {
     if (error) {
       return res.status(500).json({
         code: 2003,
@@ -22,14 +23,14 @@ exports.postTodos = async (req, res) => {
     } else {
       return res.status(200).json({
         code: 2004,
-        message: CONSTANTS.TODO_ADDED_SUCCESS,
-        data: addedTodos,
+        message: CONSTANTS.BLOG_ADDED_SUCCESS,
+        data: addedBlogs,
       });
     }
   });
 };
 
-exports.getAllTodos = async (req, res) => {
+exports.getAllBlogs = async (req, res) => {
   const pageNumber = parseInt(req.query.pageNumber) || 0;
   const pageSize = parseInt(req.query.pageSize) || 10;
   const skip = pageNumber * pageSize;
@@ -41,18 +42,18 @@ exports.getAllTodos = async (req, res) => {
   }
 
   try {
-    let todoData = await todos.find(params).limit(pageSize).skip(skip);
-    if (todoData && todoData.length === 0) {
+    let blogData = await blogs.find(params).limit(pageSize).skip(skip);
+    if (blogData && blogData.length === 0) {
       return res.status(200).json({
         code: 2000,
         message: CONSTANTS.NO_DATA_FOUND,
-        data: todoData,
+        data: blogData,
       });
     } else {
       return res.status(200).json({
         code: 2001,
         message: CONSTANTS.ALL_DATA_SUCCESS,
-        data: todoData,
+        data: blogData,
       });
     }
   } catch (error) {
@@ -64,26 +65,28 @@ exports.getAllTodos = async (req, res) => {
   }
 };
 
-exports.updateTodos = async (req, res) => {
-  const { title } = req.body;
-  const todo = {
+exports.updateBlogs = async (req, res) => {
+  const { title, body, conclusion } = req.body;
+  const blog = {
     title,
+    body,
+    conclusion
   };
   try {
-    const updateTodos = await todos.findByIdAndUpdate(req.params.id, todo, {
+    const updateBlogs = await blogs.findByIdAndUpdate(req.params.id, blog, {
       new: true,
     });
-    if (updateTodos && updateTodos.length === 0) {
+    if (updateBlogs && updateBlogs.length === 0) {
       return res.status(200).json({
         code: 2000,
         message: CONSTANTS.NO_DATA_FOUND,
-        data: updateTodos,
+        data: updateBlogs,
       });
     } else {
       return res.status(200).json({
         code: 2001,
-        message: CONSTANTS.TODO_UPDATE_SUCCESS,
-        data: updateTodos,
+        message: CONSTANTS.BLOG_UPDATE_SUCCESS,
+        data: updateBlogs,
       });
     }
   } catch (error) {
@@ -95,13 +98,13 @@ exports.updateTodos = async (req, res) => {
   }
 };
 
-exports.deleteTodos = async (req, res) => {
+exports.deleteBlogs = async (req, res) => {
   try {
-    const deletedTodos = await todos.findByIdAndDelete(req.params.id);
+    const deletedBlogs = await blogs.findByIdAndDelete(req.params.id);
     return res.status(204).json({
       code: 2001,
-      message: CONSTANTS.TODO_DELETE_SUCCESS,
-      data: deletedTodos,
+      message: CONSTANTS.BLOG_DELETE_SUCCESS,
+      data: deletedBlogs,
     });
   } catch (error) {
     console.log(error);

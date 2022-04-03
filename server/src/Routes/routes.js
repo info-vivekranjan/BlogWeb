@@ -1,37 +1,37 @@
 const auth = require('../middleware/auth')
 const express = require("express");
 const router = express.Router();
-const todosController = require("../controller/todosController");
+const blogsController = require("../controller/blogsController");
 
 router.get(
-  "/getAllTodos",
+  "/getAllBlogs",
   auth,
-  todosController.allowIfLoggedin,
-  todosController.grantAccess("readOwn", "profile"),
-  todosController.getAllTodos
+  blogsController.allowIfLoggedin,
+  blogsController.grantAccess("readOwn", "profile"),
+  blogsController.getAllBlogs
 );
 router.post(
-  "/addTodos",
+  "/addBlogs",
   auth,
-  todosController.allowIfLoggedin,
-  todosController.grantAccess("createAny", "profile"),
-  todosController.postTodos
+  blogsController.allowIfLoggedin,
+  blogsController.grantAccess("createAny", "profile"),
+  blogsController.postBlogs
 );
 router.put(
-  "/updateTodos/:id",
+  "/updateBlogs/:id",
   auth,
-  todosController.allowIfLoggedin,
-  todosController.grantAccess("updateAny", "profile"),
-  todosController.updateTodos
+  blogsController.allowIfLoggedin,
+  blogsController.grantAccess("updateAny", "profile"),
+  blogsController.updateBlogs
 );
 router.delete(
-  "/deleteTodos/:id",
+  "/deleteBlogs/:id",
   auth,
-  todosController.allowIfLoggedin,
-  todosController.grantAccess("deleteAny", "profile"),
-  todosController.deleteTodos
+  blogsController.allowIfLoggedin,
+  blogsController.grantAccess("deleteAny", "profile"),
+  blogsController.deleteBlogs
 );
-router.post("/register", todosController.registerUser);
-router.post("/login", todosController.loginUser);
+router.post("/register", blogsController.registerUser);
+router.post("/login", blogsController.loginUser);
 
 module.exports = router;

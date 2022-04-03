@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
+const User = require("../model/todoUsersModel");
 
-const verifyToken = (req, res, next) => {
+const verifyToken = async(req, res, next) => {
   const token =
     req.body.token || req.query.token || req.headers["x-access-token"];
 
@@ -10,8 +11,14 @@ const verifyToken = (req, res, next) => {
       .send({ message: "Auth token is required for authentication" });
   }
   try {
-    const decoded = jwt.verify(token, "TodoToken123");
-    req.user = decoded;
+    const { user_id, exp } = await jwt.verify(token, "TodoToken123");
+    // Check if token has expired
+    if (exp < Date.now().valueOf() / 1000) {
+     return res.status(401).json({
+      error: "JWT token has expired, please login to obtain a new one"
+     });
+    }
+    res.locals.loggedInUser = await User.findById(user_id);
   } catch (err) {
     return res.status(401).send({ message: "Invalid Token" });
   }

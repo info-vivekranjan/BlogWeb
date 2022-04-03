@@ -4,6 +4,7 @@ const User = require("../model/todoUsersModel");
 const CONSTANTS = require("../constants/constant");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const { roles } = require("../grantObject");
 
 exports.postTodos = async (req, res) => {
   const { title, status } = req.body;
@@ -163,7 +164,7 @@ exports.registerUser = async (req, res) => {
 
     // Create token
     const token = jwt.sign(
-      { email: params?.email },
+      { user_id: user._id, email: params?.email },
       "TodoToken123",
       {
         expiresIn: "2h",
@@ -201,9 +202,13 @@ exports.loginUser = async (req, res) => {
 
     if (user && (await bcrypt.compare(params?.password, user.password))) {
       // Create token
-      const token = jwt.sign({ email: params.email }, "TodoToken123", {
-        expiresIn: "2h",
-      });
+      const token = jwt.sign(
+        { user_id: user._id, email: params.email },
+        "TodoToken123",
+        {
+          expiresIn: "2h",
+        }
+      );
 
       // save user token
       user.token = token;
@@ -221,5 +226,35 @@ exports.loginUser = async (req, res) => {
       code: 2002,
       message: CONSTANTS.SOMETHING_WENT_WRONG,
     });
+  }
+};
+
+exports.grantAccess = function (action, resource) {
+  return async (req, res, next) => {
+    try {
+      const permission = roles.can(req.user.role)[action](resource);
+      if (!permission.granted) {
+        return res.status(401).json({
+          error: "You don't have enough permission to perform this action",
+        });
+      }
+      next();
+    } catch (error) {
+      next(error);
+    }
+  };
+};
+
+exports.allowIfLoggedin = async (req, res, next) => {
+  try {
+    const user = res.locals.loggedInUser;
+    if (!user)
+      return res.status(401).json({
+        error: "You need to be logged in to access this route",
+      });
+    req.user = user;
+    next();
+  } catch (error) {
+    next(error);
   }
 };

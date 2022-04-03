@@ -6,7 +6,7 @@ const todosSchemaModel = new mongoose.Schema(
     status: { type: Boolean, required: true, default: false },
     created_at: { type: Date, required: false, default: new Date() },
   },
-  { timestamp: true, versionKey: false }
+  { timestamps: true, versionKey: false }
 );
 
 const todosSchema = mongoose.model("todo", todosSchemaModel);

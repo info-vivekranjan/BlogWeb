@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const connect = () => {
-  mongoose.connect("mongodb://127.0.0.1:27017/blogs", {
+  mongoose.connect("mongodb+srv://blogweb-react:react@cluster1.zgjna.mongodb.net/blogs?retryWrites=true&w=majority", {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   }).then(() => {

@@ -118,7 +118,7 @@ exports.deleteBlogs = async (req, res) => {
 exports.registerUser = async (req, res) => {
   try {
     // Get user input
-    const { first_name, last_name, email, password } = req.body;
+    const { first_name, last_name, email, password, role } = req.body;
 
     const params = {};
     if (first_name) {
@@ -132,6 +132,9 @@ exports.registerUser = async (req, res) => {
     }
     if (password) {
       params.password = password;
+    }
+    if (role) {
+      params.role = role;
     }
 
     // Validate user input
@@ -163,6 +166,7 @@ exports.registerUser = async (req, res) => {
       last_name: params?.last_name,
       email: params?.email.toLowerCase(), // sanitize: convert email to lowercase
       password: encryptedPassword,
+      role: params?.role
     });
 
     // Create token

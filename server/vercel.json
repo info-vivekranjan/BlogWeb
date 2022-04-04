@@ -1,8 +1,8 @@
 {
-  "version": 7,
+  "version": 2.1,
   "builds": [
     {
-      "src": "index.js",
+      "src": "./src/index.js",
       "use": "@vercel/node"
     }
   ],

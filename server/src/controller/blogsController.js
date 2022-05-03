@@ -9,6 +9,7 @@ const { roles } = require("../grantObject");
 exports.postBlogs = async (req, res) => {
   const {
     title,
+    category,
     img,
     href,
     body,
@@ -52,11 +53,13 @@ exports.postBlogs = async (req, res) => {
     img_10,
     href_10,
     body_10,
+    tags,
     conclusion_title,
     conclusion_body,
   } = req.body;
   const blog = {
     title,
+    category,
     img,
     href,
     body,
@@ -100,6 +103,7 @@ exports.postBlogs = async (req, res) => {
     img_10,
     href_10,
     body_10,
+    tags,
     conclusion_title,
     conclusion_body,
   };
@@ -159,6 +163,7 @@ exports.getAllBlogs = async (req, res) => {
 exports.updateBlogs = async (req, res) => {
   const {
     title,
+    category,
     img,
     href,
     body,
@@ -202,11 +207,13 @@ exports.updateBlogs = async (req, res) => {
     img_10,
     href_10,
     body_10,
+    tags,
     conclusion_title,
     conclusion_body,
   } = req.body;
   const blog = {
     title,
+    category,
     img,
     href,
     body,
@@ -250,6 +257,7 @@ exports.updateBlogs = async (req, res) => {
     img_10,
     href_10,
     body_10,
+    tags,
     conclusion_title,
     conclusion_body,
   };

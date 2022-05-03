@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const blogsSchemaModel = new mongoose.Schema(
   {
     title: { type: String, required: true },
+    category: { type: String, required: true },
     img: { type: String },
     href: { type: String },
     body: { type: String },
@@ -57,6 +58,7 @@ const blogsSchemaModel = new mongoose.Schema(
     href_10: { type: String },
     body_10: { type: String },
 
+    tags: { type: [String] },
     conclusion_title: { type: String },
     conclusion_body: { type: String },
   },
